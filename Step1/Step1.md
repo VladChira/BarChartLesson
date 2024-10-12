@@ -1,8 +1,8 @@
 # Step 1 - Installing Python and Seaborn
 
 
-## Installing Python
-This section deals with installing Python for Windows/Linux. Click [here](#Stuff) to skip to the Python packages installation section
+## Recap - Installing Python
+This section deals with installing Python for Windows/Linux. Click [here](#InstallingSeaborn) to skip to the Python packages installation section
 
 ### Windows
 To install Python on Windows, follow these steps:

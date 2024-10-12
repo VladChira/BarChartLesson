@@ -12,7 +12,7 @@ In this lesson, we will be creating a **bar chart** in Python with the [**seabor
 ## Prerequisites
 
 ### Difficulty: 2/5
-This lesson is of easy difficulty. You are expected to be at least slightly familiar with the Python programming language and working with a terminal window. The rest will be fully explained.
+This lesson is of easy difficulty. You are expected to be at least slightly familiar with the Python programming language, working with a terminal window and have basic knowledge of the dictionary data structure. The rest will be fully explained.
 
 ### Lesson format
 Each step will have detailed instructions for you to follow, as well as challenges that you will need to complete on your own. If you are stuck, the solution is provided in a separate file.

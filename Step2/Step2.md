@@ -39,10 +39,104 @@ We can easily tell that not all of the data in the dataset was used to generate 
 Moreover, there is no ``count`` column in the dataset, but we see it in the chart. That means the ``count`` values were calculated based on the dataset information *without* explicitly being in the dataset.
 
 To sum up, we have the following tasks here:
-1. Filter dataset to only a subset of platforms: PS4, XOne, PC, WiiU and discard all others (like PS3, X30 etc.)
-2. Discard all columns except ``platform`` and ``genre``
+1. Discard all columns except ``platform`` and ``genre``
+2. Filter dataset to only a subset of platforms: PS4, XOne, PC, WiiU and discard all others (like PS3, X30 etc.)
 3. Calculate how many sales per platform by genre (``count``)
 4. Create the final dataset that we send to seaborn
+
+### Discarding unnecessary columns
+
+The idea here is to loop through all the rows of the dataset and only extract the two rows we need: ``platform`` and ``genre``.
+```python
+import csv
+
+# Create the new dataset
+new_dataset = []
+
+with open('dataset.csv') as dataset_file:
+    # DictReader will convert the rows into dictionaries
+    reader = csv.DictReader(dataset_file)
+
+    for row in reader:
+        # For each game in the dataset, extract its platform and genre
+        platform = row['platform']
+        genre = row['genre']
+        # Add only these two to the new dataset
+        new_dataset.append({'platform': platform, 'genre': genre})
+    
+    # Print a few values from the dataset to make sure it worked
+    for i in range(0, 10):
+        print(new_dataset[i])
+```
+You should get the following output:
+```
+{'platform': 'PS4', 'genre': 'Shooter'}
+{'platform': 'PS4', 'genre': 'Action'}
+{'platform': '3DS', 'genre': 'Role-Playing'}
+{'platform': 'PS4', 'genre': 'Sports'}
+{'platform': 'PS4', 'genre': 'Shooter'}
+{'platform': 'PS4', 'genre': 'Shooter'}
+{'platform': 'PS4', 'genre': 'Sports'}
+{'platform': '3DS', 'genre': 'Fighting'}
+{'platform': 'XOne', 'genre': 'Shooter'}
+{'platform': 'PS4', 'genre': 'Role-Playing'}
+```
+We are making good progress! Each row represents a game and we have its platform and genre. We move to the next step.
+
+
+### Filtering dataset
+If we look at the output above, there are some platforms that we don't want. This will be our next task, to remove all games on platforms we are not interested in. This is also quite simple. All we have to do is loop through the list of dictionaries and remove those whose platform is not in a list.
+```python
+# ...
+    for row in reader:
+        # For each game in the dataset, extract its platform and genre
+        platform = row['platform']
+        genre = row['genre']
+        # Add only these two to the new dataset
+        new_dataset.append({'platform': platform, 'genre': genre})
+
+    allowed_platforms = ['PS4', 'XOne', 'PC', 'WiiU']
+    for game in new_dataset:
+        if not game['platform'] in allowed_platforms:
+            # Remove the game if its on a platform we don't want
+            new_dataset.remove(game)
+
+    # Print a few values from the dataset to make sure it worked
+    for i in range(0, 10):
+        print(new_dataset[i])
+```
+You should get the following output:
+```
+{'platform': 'PS4', 'genre': 'Shooter'}
+{'platform': 'PS4', 'genre': 'Action'}
+{'platform': 'PS4', 'genre': 'Sports'}
+{'platform': 'PS4', 'genre': 'Shooter'}
+{'platform': 'PS4', 'genre': 'Shooter'}
+{'platform': 'PS4', 'genre': 'Sports'}
+{'platform': 'XOne', 'genre': 'Shooter'}
+{'platform': 'PS4', 'genre': 'Role-Playing'}
+{'platform': 'WiiU', 'genre': 'Racing'}
+{'platform': 'PS4', 'genre': 'Sports'}
+```
+
+### Calculating ``count``
+For this step, we need to calculate how many games each platform has, per genre. This essentially boils down to completing the following table like this:
+
+| genre/platform | PS4 | XOne | PC | WiiU |
+|----------------|-----|------|----|------|
+| Action         | 142 |  81   | ...   |      |
+| Adventure      | 28  |      |  ...  |      |
+| Fighting       |  17   |      |  ...  |      |
+| ...
+
+Instead of a table, it's easier to represent this structure as an array of dictionaries. Each element in the array is a dictionary with ``platform``, ``genre`` and ``count`` as keys.
+
+```python
+final_dataset = []
+for game in new_dataset:
+    
+
+```
 
 ## [ADVANCED] Using pandas
 The method presented above is very long and tedious because the data manipulation is done manually. There are plenty of ways to turn all that code into just a few lines, I will present one of them here.
