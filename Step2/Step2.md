@@ -86,6 +86,16 @@ We are making good progress! Each row represents a game and we have its platform
 
 ### Filtering dataset
 If we look at the output above, there are some platforms that we don't want. This will be our next task, to remove all games on platforms we are not interested in. This is also quite simple. All we have to do is loop through the list of dictionaries and remove those whose platform is not in a list.
+
+<br><br>
+
+```
+        --- Try to solve this on your own first ---
+```
+
+<br><br>
+
+Solution:
 ```python
 # ...
     for row in reader:
@@ -95,11 +105,8 @@ If we look at the output above, there are some platforms that we don't want. Thi
         # Add only these two to the new dataset
         new_dataset.append({'platform': platform, 'genre': genre})
 
-    allowed_platforms = ['PS4', 'XOne', 'PC', 'WiiU']
-    for game in new_dataset:
-        if not game['platform'] in allowed_platforms:
-            # Remove the game if its on a platform we don't want
-            new_dataset.remove(game)
+    new_dataset = [game for game in new_dataset if game['platform'] in allowed_platforms]
+
 
     # Print a few values from the dataset to make sure it worked
     for i in range(0, 10):
@@ -129,17 +136,75 @@ For this step, we need to calculate how many games each platform has, per genre.
 | Fighting       |  17   |      |  ...  |      |
 | ...
 
-Instead of a table, it's easier to represent this structure as an array of dictionaries. Each element in the array is a dictionary with ``platform``, ``genre`` and ``count`` as keys.
+Instead of a table, it's easier to represent this structure as an array of dictionaries. Each element in the array is a dictionary with ``platform``, ``genre`` and ``count`` as keys. So in the end we should have something like this:
+```
+{'platform': 'PS4', 'genre': 'Shooter', 'count': 38}
+{'platform': 'PS4', 'genre': 'Action', 'count': 142}
+{'platform': 'PS4', 'genre': 'Sports', 'count': 42}
+{'platform': 'XOne', 'genre': 'Shooter', 'count': 36}
+...
+```
+
+The question is now how to do this data manipulation. There are many ways to approach this, I will show you one of them, but I encourage you to think of different approaches.
+
+<br><br>
+
+```
+        --- Try to solve this on your own first ---
+```
+
+<br><br>
+
+Solution:
+
+The first insight is that each pair ``(platform, genre)`` must only appear once in the final array of dictionaries. Thus, we can use the pairs ``(platform, genre)`` as keys in a new dictionary. Something like this:
+```
+ {('PS4', 'Shooter'): 38, ('PS4', 'Action'): 142, ('PS4', 'Sports'): 42 , ... }
+ ```
+
+ ```python
+grouped_dict = {}
+for game in new_dataset:
+    # The key is the pair of platform and genre
+    key = (game['platform'], game['genre'])
+
+    # If this key already exists, increment count for it
+    # Otherwise, it's a new key so add it and set count to 1
+    if key in grouped_dict:
+        grouped_dict[key] += 1
+    else:
+        grouped_dict[key] = 1
+ ```
+
+ Finally, we need to turn this back into an array of dictionaries by collapsing the key and value into three key-value pairs. For example:
+
+ ```
+('PS4', 'Shooter'): 38
+turns into
+{'platform': 'PS4', 'genre': 'Shooter', 'count': 38}
+```
 
 ```python
-final_dataset = []
-for game in new_dataset:
-    
+# Convert to array of dictionaries
+result = [{'platform': platform, 'genre': genre, 'count': count}
+        for (platform, genre), count in grouped_dict.items()]
+```
 
+## Refactoring code into a function
+For ease of use, it's a good idea to refactor all of the code we have written so far into a function that returns the final dataset. You are encouraged to do this on your own. You can find a solution in ``solution.py``.
+
+## Final dataset
+This is how the dataset that we give to seaborn should look like:
+```
+{'platform': 'PS4', 'genre': 'Shooter', 'count': 38}
+{'platform': 'PS4', 'genre': 'Action', 'count': 142}
+{'platform': 'PS4', 'genre': 'Sports', 'count': 42}
+{'platform': 'XOne', 'genre': 'Shooter', 'count': 36}
+...
 ```
 
 ## [ADVANCED] Using pandas
-The method presented above is very long and tedious because the data manipulation is done manually. There are plenty of ways to turn all that code into just a few lines, I will present one of them here.
+The method presented above is relatively long and tedious because the data manipulation is done manually. There are plenty of ways to turn all that code into just a few lines, I will present one of them here.
 
 [pandas](https://pandas.pydata.org/) is a data analysis and manipulation library for Python and it has some really powerful and useful functions that we can leverage, but they are a bit overwhelming for beginners.
 

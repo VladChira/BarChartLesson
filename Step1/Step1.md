@@ -16,11 +16,11 @@ To install Python on Windows, follow these steps:
 
 Ubuntu:
 ```bash
-sudo apt install python
+sudo apt install python3
 ```
 Fedora:
 ```bash
-sudo dnf install
+sudo dnf install python3
 ```
 
 ## Installing Seaborn

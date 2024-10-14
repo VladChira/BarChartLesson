@@ -1,6 +1,11 @@
 import csv
 import os
 
+import seaborn as sns
+sns.set_theme() 
+import matplotlib.pyplot as plt
+import pandas as pd
+
 def load_dataset():
     script =  os.path.dirname(__file__)
     dataset_path = os.path.join(script, '..', 'dataset.csv')
@@ -31,4 +36,14 @@ def load_dataset():
         return result
     
 dataset = load_dataset()
-# print(dataset)
+
+def sort_key(game):
+    platform_priority = {'PS4': 0, 'XOne': 1, 'PC': 2, 'WiiU': 3}
+    return (platform_priority.get(game['platform'], 4), game['genre'])
+
+# Sort the array using the custom sorting function
+dataset = sorted(dataset, key=sort_key)
+
+df = pd.DataFrame(dataset)
+sns.catplot(data=df, x='platform', y='count', hue='genre', kind='bar')
+plt.show() # Display the chart
