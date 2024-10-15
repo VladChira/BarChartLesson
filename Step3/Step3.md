@@ -62,7 +62,7 @@ What can we do to ensure the order of the genres and the order of the platforms 
 <br><br>
 
 Solution:   
-The trick is to sort the dataset in a specific way. All PS4 entries are first, sorted alphabetically by genre, then all XOne entries, again sorted alphabetically by genre and so on. One way is to assign priorities to each platform in a sort with a custom 
+The trick is to sort the dataset in a specific way. All PS4 entries are first, sorted alphabetically by genre, then all XOne entries, again sorted alphabetically by genre and so on. One way is to assign priorities to each platform in a sort with a custom sorting key. We use the priorities to sort, and if the priorities are identical (i.e. the same platform but different genres), we sort alphabetically by genre.
 
 ```python
 def sort_key(game):
@@ -73,7 +73,24 @@ def sort_key(game):
 dataset = sorted(dataset, key=sort_key)
 ```
 
-<br><br>
+Using this sorted dataset will produce an identical bar chart to our reference.
+
 
 ## [BONUS] Customizing chart
+Seaborn offers different ways to customize the aesthetics of your bar chart. You can read the official documentation regarding plot aesthetics by clicking [here](https://seaborn.pydata.org/tutorial/aesthetics.html), but here are a couple ideas:
 
+- Changing style to "dark mode"
+    ```python
+    sns.set_style('ticks')
+    plt.style.use("dark_background")
+    sns.catplot(data=df, x='platform', y='count', hue='genre', kind='bar')
+    plt.show()
+    ```
+    <p align="center"><img src="result2.png" width=300></p>
+- Adding text
+    ```python
+    sns.catplot(data=df, x='platform', y='count', hue='genre', kind='bar')
+    plt.text(x=0, y=140, s="Video game sales", fontsize=16, color="black")
+    plt.show()
+    ```
+    <p align="center"><img src="result3.png" width=300></p>

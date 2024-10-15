@@ -46,4 +46,5 @@ dataset = sorted(dataset, key=sort_key)
 
 df = pd.DataFrame(dataset)
 sns.catplot(data=df, x='platform', y='count', hue='genre', kind='bar')
+plt.text(x=0, y=140, s="Video game sales", fontsize=16, color="black")
 plt.show() # Display the chart

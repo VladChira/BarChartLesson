@@ -5,7 +5,7 @@ Real-life data is messy. Sometimes we cannot work with datasets unless we have m
 Fortunately, the dataset provided here is ready for us to use, no cleaning up needed.  Still, if you use a different dataset, you might have to do some cleaning up. This process is outside the scope of this lesson.
 
 ## Looking at the dataset
-If we open up our .csv file in a Spreadsheet editor like Google Docs or Microsoft Excel, we notice that it's just a big table with over 1500 lines and 16 rows of text. 
+If we open up our .csv file in a Spreadsheet editor like Google Sheets or Microsoft Excel, we notice that it's just a big table with over 1500 lines and 16 rows of text. 
 <p align="center"><img src="csv_in_spreadsheet.png" width="800"></p>
 <p align="center">Part of the .csv file opened as a spreadsheet</p>
 
@@ -29,6 +29,10 @@ with open('dataset.csv') as dataset_file:
         print(row)
 ```
 Running this code should print the entire contents of the dataset, row by row.
+```
+{'name': 'Call of Duty: Black Ops 3', 'platform': 'PS4', 'year_of_release': '2015', 'genre': 'Shooter', 'publisher': 'Activision', 'na_sales': '6.03', 'eu_sales': '5.86', 'jp_sales': '0.36' ... }
+...
+```
 
 ## Preparing the dataset
 Let's look at the end result we are trying to archieve once more.
@@ -105,8 +109,8 @@ Solution:
         # Add only these two to the new dataset
         new_dataset.append({'platform': platform, 'genre': genre})
 
+    # We can use list comprehension for a one-liner
     new_dataset = [game for game in new_dataset if game['platform'] in allowed_platforms]
-
 
     # Print a few values from the dataset to make sure it worked
     for i in range(0, 10):
@@ -186,6 +190,9 @@ turns into
 
 ```python
 # Convert to array of dictionaries
+# Note: this one-liner uses list comprehension and tuple unpacking.
+# If it's too confusing, looping through the dictionary and manually
+# appending to the array works just as well.
 result = [{'platform': platform, 'genre': genre, 'count': count}
         for (platform, genre), count in grouped_dict.items()]
 ```

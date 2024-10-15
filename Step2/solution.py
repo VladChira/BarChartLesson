@@ -10,6 +10,7 @@ def load_dataset():
         reader = csv.DictReader(dataset_file)
 
         for row in reader:
+            print(row)
             platform = row['platform']
             genre = row['genre']
             new_dataset.append({'platform': platform, 'genre': genre})

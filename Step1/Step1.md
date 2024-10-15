@@ -2,7 +2,7 @@
 
 
 ## Recap - Installing Python
-This section deals with installing Python for Windows/Linux. Click [here](#InstallingSeaborn) to skip to the Python packages installation section
+This section deals with installing Python for Windows/Linux. If you already have Python installed, scroll down to the next section.
 
 ### Windows
 To install Python on Windows, follow these steps:
@@ -22,6 +22,7 @@ Fedora:
 ```bash
 sudo dnf install python3
 ```
+Check for a correct installation by running ``python --version`` in terminal. You should not get any errors.
 
 ## Installing Seaborn
 ### Windows
@@ -49,7 +50,7 @@ sns.pairplot(data=penguins, hue="species")
 # Display the plot
 plt.show()
 ```
-Open a terminal and run the code by typing
+Open a terminal in the directory of the script you just created and run the code by typing
 ```bash
 python test.py
 ```
